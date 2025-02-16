@@ -202,7 +202,8 @@ void update()
     g_fire_matrix = glm::translate(g_fire_matrix, g_fire_position);
     g_water_matrix = glm::translate(g_water_matrix, g_water_position);
 
-    g_water_matrix = glm::translate(g_water_matrix, glm::vec3(g_x_offset, g_y_offset, 0.0f));
+    //g_water_matrix = glm::translate(g_water_matrix,glm::vec3()
+    g_water_matrix = glm::translate(g_water_matrix, glm::vec3(g_x_offset+2.0f, g_y_offset+1.5f, 0.0f));
 
     g_fire_matrix = glm::rotate(g_fire_matrix, ROT_ANGLE_POS, glm::vec3(0.0f, 0.0f, 1.0f));
 
