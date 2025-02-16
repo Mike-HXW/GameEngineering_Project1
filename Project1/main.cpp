@@ -30,12 +30,12 @@ enum AppStatus { RUNNING, TERMINATED };
 constexpr char V_SHADER_PATH[] = "shaders/vertex_textured.glsl",
 F_SHADER_PATH[] = "shaders/fragment_textured.glsl";
 
-constexpr int NUMBER_OF_TEXTURES = 1; 
-constexpr GLint LEVEL_OF_DETAIL = 0; 
+constexpr int NUMBER_OF_TEXTURES = 1;
+constexpr GLint LEVEL_OF_DETAIL = 0;
 constexpr GLint TEXTURE_BORDER = 0;
 
 
-constexpr char FIRE_SPRITE[] = "fire.jpg"; 
+constexpr char FIRE_SPRITE[] = "fire.jpg";
 constexpr char WATER_SPRITE[] = "water.png";
 
 constexpr glm::vec3 INIT_POS_fire = glm::vec3(0.5f, 0.5f, 0.0f);
@@ -83,15 +83,15 @@ glm::vec3 g_fire_position = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 g_fire_movement = glm::vec3(0.2f, 0.2f, 0.0f);
 
 glm::vec3 g_water_position = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 g_water_movement = glm::vec3(0.35f, 0.35f, 0.0f);
+glm::vec3 g_water_movement = glm::vec3(0.3f, 0.3f, 0.0f);
 
-glm::vec3 g_water_scale = glm::vec3(0.1f, 0.1f, 0.0f); 
-glm::vec3 g_water_size  = glm::vec3(1.0f, 1.0f, 0.0f);  
+glm::vec3 g_water_scale = glm::vec3(0.1f, 0.1f, 0.0f);
+glm::vec3 g_water_size = glm::vec3(1.0f, 1.0f, 0.0f);
 
 float ROT_ANGLE_POS = glm::radians(0.0f);
-float ROT_ANGLE_MOVE = glm::radians(0.05f);
+float ROT_ANGLE_MOVE = glm::radians(20.0f);
 
-GLuint load_texture(const char* filepath) 
+GLuint load_texture(const char* filepath)
 {
     int width, height, number_of_components;
     unsigned char* image = stbi_load(filepath, &width, &height, &number_of_components, STBI_rgb_alpha);
@@ -148,7 +148,7 @@ void initialise()
 
     glClearColor(BG_RED, BG_BLUE, BG_GREEN, BG_OPACITY);
 
-    g_water_texture_id = load_texture(WATER_SPRITE); 
+    g_water_texture_id = load_texture(WATER_SPRITE);
     g_fire_texture_id = load_texture(FIRE_SPRITE);
 
     glEnable(GL_BLEND);
@@ -169,8 +169,8 @@ void process_input()
 
 void update()
 {
-    float ticks = (float)SDL_GetTicks() / 1000.0f; 
-    float delta_time = ticks - g_previous_ticks;  
+    float ticks = (float)SDL_GetTicks() / 1000.0f;
+    float delta_time = ticks - g_previous_ticks;
     g_previous_ticks = ticks;
 
     g_water_position += g_water_movement * delta_time;
@@ -198,7 +198,7 @@ void update()
     {
         ROT_ANGLE_POS = glm::radians(0.0f);
     }
-    
+
 }
 
 void draw_object(glm::mat4& g_object_model_matrix, GLuint& g_object_texture_id)
@@ -212,16 +212,16 @@ void render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     float vertices[] = {
-        -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f, 
-        -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f   
+        -0.5f, -0.5f, 0.5f, -0.5f, 0.5f, 0.5f,
+        -0.5f, -0.5f, 0.5f, 0.5f, -0.5f, 0.5f
     };
 
     glVertexAttribPointer(g_shader_program.get_position_attribute(), 2, GL_FLOAT, false, 0, vertices);
     glEnableVertexAttribArray(g_shader_program.get_position_attribute());
 
     float texture_coordinates[] = {
-        0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,    
-        0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,     
+        0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f,
+        0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f,
     };
 
     glVertexAttribPointer(g_shader_program.get_tex_coordinate_attribute(), 2, GL_FLOAT, false, 0, texture_coordinates);
@@ -229,7 +229,7 @@ void render() {
 
     draw_object(g_fire_matrix, g_fire_texture_id);
     draw_object(g_water_matrix, g_water_texture_id);
-    
+
     glDisableVertexAttribArray(g_shader_program.get_position_attribute());
     glDisableVertexAttribArray(g_shader_program.get_tex_coordinate_attribute());
 
