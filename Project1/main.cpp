@@ -38,8 +38,9 @@ constexpr GLint TEXTURE_BORDER = 0;
 constexpr char FIRE_SPRITE[] = "fire.jpg";
 constexpr char WATER_SPRITE[] = "water.png";
 
-constexpr glm::vec3 INIT_POS_fire = glm::vec3(0.5f, 0.5f, 0.0f);
-constexpr glm::vec3 INIT_POS_water = glm::vec3(-1.0f, -1.0f, 0.0f);
+constexpr glm::vec3 INIT_POS_fire = glm::vec3(1.0f, 1.0f, 0.0f);
+constexpr glm::vec3 INIT_POS_water = glm::vec3(-1.0f, -0.5f, 0.0f);
+
 constexpr glm::vec3 INIT_SCALE_water = glm::vec3(1.0f, 1.0f, 0.0f);
 
 GLuint g_player_texture_id;
@@ -83,13 +84,20 @@ glm::vec3 g_fire_position = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 g_fire_movement = glm::vec3(0.2f, 0.2f, 0.0f);
 
 glm::vec3 g_water_position = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 g_water_movement = glm::vec3(0.3f, 0.3f, 0.0f);
+//glm::vec3 g_water_movement = glm::vec3(0.3f, 0.3f, 0.0f);
+glm::vec3 g_water_movement = glm::vec3(0.2f, 0.2f, 0.0f);
 
 glm::vec3 g_water_scale = glm::vec3(0.1f, 0.1f, 0.0f);
 glm::vec3 g_water_size = glm::vec3(1.0f, 1.0f, 0.0f);
 
 float ROT_ANGLE_POS = glm::radians(0.0f);
 float ROT_ANGLE_MOVE = glm::radians(20.0f);
+
+constexpr float RADIUS = 2.5f;      // radius of your circle
+constexpr float ORBIT_SPEED = 1.0f;  // rotational speed
+float       g_angle = 0.0f;     // current angle
+float       g_x_offset = 0.0f, // current x and y coordinates
+            g_y_offset = 0.0f;
 
 GLuint load_texture(const char* filepath)
 {
@@ -180,6 +188,11 @@ void update()
 
     g_water_size += g_water_scale * delta_time;
 
+    g_angle += ORBIT_SPEED * delta_time; 
+
+    g_x_offset = RADIUS * glm::cos(g_angle);
+    g_y_offset = RADIUS * glm::sin(g_angle);
+
     g_water_matrix = glm::mat4(1.0f);
     g_fire_matrix = glm::mat4(1.0f);
 
@@ -188,6 +201,8 @@ void update()
 
     g_fire_matrix = glm::translate(g_fire_matrix, g_fire_position);
     g_water_matrix = glm::translate(g_water_matrix, g_water_position);
+
+    g_water_matrix = glm::translate(g_water_matrix, glm::vec3(g_x_offset, g_y_offset, 0.0f));
 
     g_fire_matrix = glm::rotate(g_fire_matrix, ROT_ANGLE_POS, glm::vec3(0.0f, 0.0f, 1.0f));
 
